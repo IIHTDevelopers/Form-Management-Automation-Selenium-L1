@@ -1,0 +1,23 @@
+{
+	"HomePage_Title":{
+		"pageTitle":"Register"
+	},
+		"userdetails":{
+			"firstName":"surya",
+			"lastName":"Nayak",
+			"adds":"Cuttack, Odhisha -754006",
+			"emaiI":"nayaksurya50@gmail.com",
+			"phoneNo":"9124590608",
+			"password":"Surya@123456",
+			"confirmPassword":"Surya@123456"
+
+	},
+	"alerts_Page":{
+		"alertsTitle":"Alerts"
+	},
+	"alerts_message":{
+		"alertsMessage":"I am an alert box!"
+	}
+
+}
+
