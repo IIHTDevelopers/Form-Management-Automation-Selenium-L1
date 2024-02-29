@@ -46,16 +46,7 @@ public class FileOperations
 		return null;
 	}
 	
-	/**
-	 * This method is useful to read the Property file which must be simple in structure
-	 * @param file - {@link String} Property file location
-	 * @return {@link Map}
-	 * @throws FilloException
-	 */
-	public Map<String, String> readProperty(String file) throws FileNotFoundException, IOException
-	{
-		return null;
-	}
+	
 	
 	
 

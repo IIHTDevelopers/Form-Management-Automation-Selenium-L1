@@ -145,10 +145,10 @@ try {
 		System.out.print(BLUE_BOLD_BRIGHT + "Test For : ");
 		
 
-		for (int i = 1; i < r.length; i++) {
-			System.out.print(BLUE_BOLD_BRIGHT + r[i] + " ");
+		
+			System.out.print(BLUE_BOLD_BRIGHT + testName);
 			
-		}
+		
 		System.out.print(" : ");
 		
 		if (result.toString().equals("true")) {
