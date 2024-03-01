@@ -144,6 +144,17 @@ public class CommonEvents
 
 	}
 	
+	/***
+	 * This method is useful to navigate to the desired application url
+	 * @param url
+	 * @return {@link CommonEvents}
+	 * @throws Exception 
+	 */
+	public CommonEvents navigateTo(String url) throws Exception
+	{
+		return null;
+	}
 	
+
 	
 }
