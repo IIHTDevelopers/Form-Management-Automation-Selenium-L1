@@ -152,7 +152,7 @@ public class DemoRegisterPages extends StartupPage
 		return null;
 	}
 	
-	public DemoRegisterPages validatePasswordFieldForScenarioOneBySendingDifferentValues(String data) throws Exception {
+	public DemoRegisterPages validatePasswordFieldForScenarioOneBySendingMatchingValues(String data) throws Exception {
 		return null;
 	}
 	
@@ -160,7 +160,7 @@ public class DemoRegisterPages extends StartupPage
 		return null;
 	}
 	
-	public DemoRegisterPages validatePasswordFieldForScenarioThreeBySendingDifferentValues(String data) throws Exception {
+	public DemoRegisterPages validatePasswordFieldForScenarioThreeBySendingInvalidValues(String data) throws Exception {
 		return null;
 	}
 	
