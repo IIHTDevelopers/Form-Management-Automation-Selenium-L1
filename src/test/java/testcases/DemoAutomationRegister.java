@@ -2,24 +2,19 @@
 
 package testcases;
 
-import java.util.Map;
-
 import static testutils.TestUtils.businessTestFile;
 import static testutils.TestUtils.currentTest;
 import static testutils.TestUtils.yakshaAssert;
 
+import java.util.Map;
 
-
-//import org.testng.softAssert;
-import org.testng.Reporter;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import com.beust.jcommander.internal.Console;
 
 import coreUtilities.testutils.ApiHelper;
 import coreUtilities.utils.FileOperations;
@@ -34,27 +29,30 @@ public class DemoAutomationRegister extends AppTestBase {
 	String expectedDataFilePath = testDataFilePath+"expected_data.json";
 	StartupPage startupPage;
 	DemoRegisterPages RegisterPageInstance;
-	String numberToBeEntered="nayaksurya50@gmail.com";
-	String ExpectedErrorMessage="The phone number you're trying to verify was recently used to verify a different account.  Please try a different number.";
+	
 	
 	
 	@Parameters({"browser", "environment"})
 	@BeforeClass(alwaysRun = true)
 	public void initBrowser(String browser, String environment) throws Exception {
-		 softAssert = new SoftAssert();
+		
 		try{
 		configData = new FileOperations().readJson(config_filePath, environment);
 		configData.put("url", configData.get("url").replaceAll("[\\\\]", ""));
 		configData.put("browser", browser);
 		
 		boolean isValidUrl = new ApiHelper().isValidUrl(configData.get("url"));
-		yakshaAssert(currentTest(), isValidUrl, businessTestFile);
-		softAssert.assertTrue(isValidUrl, configData.get("url")+" might be Server down at this moment. Please try after sometime.");
 		initialize(configData);
 		startupPage = new StartupPage(driver);
+		RegisterPageInstance = new DemoRegisterPages(driver);
+		yakshaAssert(currentTest(), isValidUrl, businessTestFile);
+		Assert.assertTrue(isValidUrl, configData.get("url")+" might be Server down at this moment. Please try after sometime.");
+		
+		
 		}catch(Exception ex){
-			softAssert.assertTrue(false);
+			
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}
 	}
 	
@@ -62,206 +60,259 @@ public class DemoAutomationRegister extends AppTestBase {
 	public void DemoRegisterAutomation() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
+		 
 		
 		Map<String, String> expectedData = new FileOperations().readJson(expectedDataFilePath, "HomePage_Title");
-		yakshaAssert(currentTest(), RegisterPageInstance.getPageTitle().equals( expectedData.get("pageTitle")), businessTestFile);
-		softAssert.assertEquals(RegisterPageInstance.getPageTitle(), expectedData.get("pageTitle"), "page title is not matching please check manually");
+		String title = RegisterPageInstance.getHomePageTitle();
+		yakshaAssert(currentTest(), title.equals( expectedData.get("pageTitle")), businessTestFile);
+		Assert.assertEquals(title, expectedData.get("pageTitle"), "page title is not matching please check manually");
 	}catch(Exception ex){
-		softAssert.assertTrue(false);
 		yakshaAssert(currentTest(), false, businessTestFile);
+		Assert.assertTrue(false);
 	}	
 	}	
 	
-	@Test(priority = 2, groups = {"sanity"}, description="Click SwitchTo à Alert Link. and Validate if control is navigated to new page")
-	public void clickOnSwitchToAlertAndValidateTitlePage() throws Exception {
+	@Test(priority = 2, groups = {"sanity"}, description="Hover SwitchTo Option")
+	public void hoverOnSwitchToMenuOption() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		RegisterPageInstance.clickOnswitchToNavigationMenu();
-		RegisterPageInstance.clickOnAlerts();
+		 
+		DemoRegisterPages page = RegisterPageInstance.hoverOnswitchToNavigationMenu();
+		
+		
+		yakshaAssert(currentTest(), page != null, businessTestFile);
+		Assert.assertNotNull(page);
+	}catch(Exception ex){
+		yakshaAssert(currentTest(), false, businessTestFile);
+		Assert.assertTrue(false);
+	}		
+	}	
+	
+	@Test(priority = 3, groups = {"sanity"}, description="Click on alert sub option")
+	public void clickOnAlertSubOption() throws Exception {
+		try{
+		 
+		 
+		
+		DemoRegisterPages page = RegisterPageInstance.clickOnAlerts();
+		
+		
+		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
+	}catch(Exception ex){
+		yakshaAssert(currentTest(), false, businessTestFile);
+		Assert.assertTrue(false);
+	}		
+	}	
+
+	@Test(priority = 4, groups = {"sanity"}, description="Return an validate alerts page title")
+	public void returnAlertsPageTitle() throws Exception {
+		try{
+		 
+		 
+		
+		String title = RegisterPageInstance.alertsPageTitle();
 		
 		Map<String, String> expectedData = new FileOperations().readJson(expectedDataFilePath, "alerts_Page");
-		yakshaAssert(currentTest(), RegisterPageInstance.alertsPageTitle().equals(expectedData.get("alertsTitle")), businessTestFile);
-		softAssert.assertEquals(RegisterPageInstance.alertsPageTitle(), expectedData.get("alertsTitle"), 				"page title is not matching please check manually");
+		yakshaAssert(currentTest(), title.equals(expectedData.get("alertsTitle")), businessTestFile);
+		Assert.assertEquals(title, expectedData.get("alertsTitle"), 				"page title is not matching please check manually");
 	}catch(Exception ex){
-		 softAssert.assertTrue(false);
 		yakshaAssert(currentTest(), false, businessTestFile);
+		Assert.assertTrue(false);
+	}		
 	}	
-	}	
-	
-	@Test(priority = 3, groups = {"sanity"}, description="Click on button to display the alert box and Validate if alert popup is shown.")
-	public void handleAlertsPopupAndValidateTheTextInsideAnAlertsPopup() throws Exception {
+
+	@Test(priority = 5, groups = {"sanity"}, description="Click on button to display the alert box and Validate if alert popup is shown.")
+	public void clickOnButtonToDisplayAnAlertBox() throws Exception {
 		try{
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		RegisterPageInstance.clickOnButtonToDisplayAnAlertBox();	
-		Map<String, String> expectedData = new FileOperations().readJson(expectedDataFilePath, "alerts_message");
-		yakshaAssert(currentTest(), RegisterPageInstance.alertsMessageValidation().equals(expectedData.get("alertsMessage")), businessTestFile);
-		softAssert.assertEquals(RegisterPageInstance.alertsMessageValidation(), expectedData.get("alertsMessage"), 				"page title is not matching please check manually");
+		 
+		DemoRegisterPages page = RegisterPageInstance.clickOnButtonToDisplayAnAlertBox();	
+		
+		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		
 		}catch(Exception ex){
-			 softAssert.assertTrue(false);
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
+		}	
+		
+	}	
+
+	@Test(priority = 6, groups = {"sanity"}, description="Validate the alert message")
+	public void alertMessageValidation() throws Exception {
+		try{
+		 
+		String message = RegisterPageInstance.alertsMessageValidation();	
+		Map<String, String> expectedData = new FileOperations().readJson(expectedDataFilePath, "alerts_message");
+		yakshaAssert(currentTest(), message.equals(expectedData.get("alertsMessage")), businessTestFile);
+		Assert.assertEquals(message, expectedData.get("alertsMessage"), "page title is not matching please check manually");
+		
+		}catch(Exception ex){
+			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 		
 	}	
 	
-	@Test(priority = 4, groups = {"sanity"}, description="Click on Register menu option to navigate to Register page. and  Fill the form with data provided in excel sheet.")
-	public void clickOnRegisterLinkAndFillTheForms() throws Exception {
+	@Test(priority = 7, groups = {"sanity"}, description="Click on Register menu option to navigate to Register page")
+	public void clickOnRegisterLink() throws Exception {
 	try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
+		 
 		
 		RegisterPageInstance.clickOnRegisterNavigationMenu();
+		String title = RegisterPageInstance.getHomePageTitle();
 		Map<String, String> expectedData = new FileOperations().readJson(expectedDataFilePath, "HomePage_Title");
-		yakshaAssert(currentTest(), RegisterPageInstance.getPageTitle().equals(expectedData.get("pageTitle")), businessTestFile);
-		softAssert.assertEquals(RegisterPageInstance.getPageTitle(), expectedData.get("pageTitle"), 				"page title is not matching please check manually");
-		String expectedDataFilePath = testDataFilePath+"expected_data.json";
-		Map<String, String> expectedRegisterDetails = new FileOperations().readJson(expectedDataFilePath, "userdetails");
-		RegisterPageInstance.fillRegisterForm(expectedRegisterDetails);
+		yakshaAssert(currentTest(), title.equals(expectedData.get("pageTitle")), businessTestFile);
+		Assert.assertEquals(title, expectedData.get("pageTitle"), 				"page title is not matching please check manually");
+		
 		
 		}catch(Exception ex){
-			 softAssert.assertTrue(false);
 			yakshaAssert(currentTest(), false, businessTestFile);
-		}	
+			Assert.assertTrue(false);
+		}		
 	}		
 	
-	@Test(priority = 5, groups = {"sanity"}, description="Click on the country dropdown and Select each country option one by one.")
+	@Test(priority = 8, groups = {"sanity"}, description="Fill the form with data provided in json")
+	public void fillTheForm() throws Exception {
+	try{
+		 
+		 
+		
+		String expectedDataFilePath = testDataFilePath+"expected_data.json";
+		Map<String, String> expectedRegisterDetails = new FileOperations().readJson(expectedDataFilePath, "userdetails");
+		DemoRegisterPages page = RegisterPageInstance.fillRegisterForm(expectedRegisterDetails);
+		
+		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
+		}catch(Exception ex){
+			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
+		}		
+	}
+
+	@Test(priority = 9, groups = {"sanity"}, description="Click on the country dropdown and Select each country option one by one.")
 	public void clickOnCountryDropDownAndSelectEachCountryOptionsOneByOne() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		DemoRegisterPages page = RegisterPageInstance.clickOnSelectCountryDropdownAndSelectEachCountryOneByOne();
-		 softAssert.assertNotNull(page);
-		yakshaAssert(currentTest(), page!=null, businessTestFile);
-		}catch(Exception ex){
-			 softAssert.assertTrue(false);
-			yakshaAssert(currentTest(), false, businessTestFile);
-		}	
-	}	
-	
-	@Test(priority = 6, groups = {"sanity"}, description="Click on the country dropdown and Validate if each country option is selectable from the dropdown.")
-	public void clickOnCountryDropDownAndValidateEachCountryOptionsIsSelectableOneByOneFromDropdown() throws Exception {
-		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		DemoRegisterPages page = RegisterPageInstance.selectEachCountryOneByOneFromCountryDrpdownAndValidate();
-		 softAssert.assertNotNull(page);
+		DemoRegisterPages page = RegisterPageInstance.clickOnSelectCountryDropdownAndSelectEachCountryOneByOne();
+		
 		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		}catch(Exception ex){
-			 softAssert.assertTrue(false);
+			 
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 	}	
 	
-	@Test(priority = 7, groups = {"sanity"}, description=" Check and uncheck each hobby checkbox and Validate that the checkboxes are responding correctly to user interaction, allowing selection and deselection.")
+	
+	@Test(priority = 10, groups = {"sanity"}, description=" Check and uncheck each hobby checkbox and Validate that the checkboxes are responding correctly to user interaction, allowing selection and deselection.")
 	public void checkAndUncheckEachCheckBoxAndValidateThatCheckBox() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
+		 
 		RegisterPageInstance.checkAndUncheckEachHobbyCheckBox();
-		DemoRegisterPages page =RegisterPageInstance.validateCheckBoxesRespondingCorrectllyToUserInterAction_AllowingSelectionAndDeselection();
-		 softAssert.assertNotNull(page);
+		DemoRegisterPages page =RegisterPageInstance.checkAndUncheckEachHobbyCheckBox();
+		 
 		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		}catch(Exception ex){
-			 softAssert.assertTrue(false);
+			 
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 	}	
 	
-	@Test(priority = 8, groups = {"sanity"}, description="Select each radio button option for gender and Validate that only one radio button option should be selectable at a time.")
+	@Test(priority = 11, groups = {"sanity"}, description="Select each radio button option for gender and Validate that only one radio button option should be selectable at a time.")
 	public void selectEachRadioOptionsForGenderValidateThatOnlyOneRadioButtonShouldBeSelect() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
+		 
 		RegisterPageInstance.selectEachRadioButton();
-		DemoRegisterPages page = RegisterPageInstance.validateEachRadioButtonoptionShouldBeSelectableAttime();
-		 softAssert.assertNotNull(page);
+		DemoRegisterPages page = RegisterPageInstance.selectEachRadioButton();
+		
 		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		}catch(Exception ex){
-			 softAssert.assertTrue(false);
+			
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 		
 	}	
 	
-	@Test(priority = 9, groups = {"sanity"}, description="passwordValidation_for_Different_Scenarios")
-	public void passwordValidationForDifferentScenarios() throws Exception {
-		try{
-		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-
-		// Scenario 1: Matching passwords
-		String matchingPassword = "Password123";
-		DemoRegisterPages page =  RegisterPageInstance.validatePasswordFieldForScenarioOneBySendingMatchingValues( matchingPassword);
-		softAssert.assertNotNull(page);
-		yakshaAssert(currentTest() + "_matchingValues", page!=null, businessTestFile);
-
-		// Scenario 2: Non-matching passwords
-		String nonMatchingPassword1 = "Password123";
-        String nonMatchingPassword2 = "Password456";
-		page = RegisterPageInstance.validatePasswordFieldForScenarioTwoBySendingDifferentValues( nonMatchingPassword1, nonMatchingPassword2 );		
-		softAssert.assertNotNull(page);
-		yakshaAssert(currentTest() + "_NonMatchingValues", page!=null, businessTestFile);
-		// Scenario 3: Password pattern validation
-		String invalidPassword = "pass"; // Password doesn't meet the minimum length requirement
-		page = RegisterPageInstance.validatePasswordFieldForScenarioThreeBySendingInvalidValues( invalidPassword );
-		softAssert.assertNotNull(page);
-		yakshaAssert(currentTest() + "_InvalidValue", page!=null, businessTestFile);
-		}catch(Exception ex){
-			softAssert.assertTrue(false);
-			yakshaAssert(currentTest(), false, businessTestFile);
-		}			
-	    
-	}	
 	
-	@Test(priority = 10, groups = {"sanity"}, description="Select different dates from the Date Of Birth fields_Validate that dates are selectable")
+
+	@Test(priority = 12, groups = {"sanity"}, description="Select different dates from the Date Of Birth fields_Validate that dates are selectable")
 	public void DateOfBirthValidation() throws Exception {
 		 
 		try{
 			
-		RegisterPageInstance = new DemoRegisterPages(driver);
+		 
 		RegisterPageInstance.selectYearMonthDate();	
-		DemoRegisterPages page = RegisterPageInstance.validateAccurateSelectableYearMonthDate();
-		softAssert.assertNotNull(page);
+		DemoRegisterPages page = RegisterPageInstance.selectYearMonthDate();
+		
 		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		}catch(Exception ex){
-			softAssert.assertTrue(false);
+			
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 
 	}	
 	
-	@Test(priority = 11, groups = {"sanity"}, description="Click on the image upload button and Choose an image file from the file system _ Validate that the selected image should be displayed on the page after upload.")
+	@Test(priority = 13, groups = {"sanity"}, description="Click on the image upload button and Choose an image file from the file system _ Validate that the selected image should be displayed on the page after upload.")
 	public void fileUploadAction() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		RegisterPageInstance.clickOnChooseFilUploadButton();
-		String image = RegisterPageInstance.getUploadImageName();
-		softAssert.assertNotNull(image);
-		yakshaAssert(currentTest(), image!=null, businessTestFile);
+		 
+		DemoRegisterPages page = RegisterPageInstance.clickOnChooseFilUploadButton();
+		
+		
+		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		Assert.assertNotNull(page);
 		}catch(Exception ex){
-			softAssert.assertTrue(false);
+			
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
+		}	
+			
+	}	
+
+	@Test(priority = 14, groups = {"sanity"}, description="Get the name of the file uploaded.")
+	public void getuploadedFileName() throws Exception {
+		try{
+		 
+		 
+		
+		String image = RegisterPageInstance.getUploadImageName();
+		
+		yakshaAssert(currentTest(), image!=null, businessTestFile);
+		Assert.assertNotNull(image);
+		}catch(Exception ex){
+			
+			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 			
 	}	
 	
-	@Test(priority = 12, groups = {"sanity"}, description="Fill the register form, leave any mandetory field (Phone No) and Verify that error messages for incomplete field displayed as appropriate.")
+	@Test(priority = 15, groups = {"sanity"}, description="Submit the register form, Verify that error messages for incomplete field displayed as appropriate.")
 	public void filltheRegisterFormAndValidateErrorMessage() throws Exception {
 		try{
 		 
-		RegisterPageInstance = new DemoRegisterPages(driver);
-		String expectedDataFilePath = testDataFilePath+"expected_data.json";
-		Map<String, String> expectedRegisterDetails = new FileOperations().readJson(expectedDataFilePath, "userdetails");
-		RegisterPageInstance.fillAndValidateTheRegisterForm(expectedRegisterDetails);
-		DemoRegisterPages page = RegisterPageInstance.validateMandetoryField();
-		softAssert.assertNotNull(page);
-		yakshaAssert(currentTest(), page!=null, businessTestFile);
+		 
+		String message = RegisterPageInstance.submitRegistrationFormAndReturnthatMessage();
+		
+		yakshaAssert(currentTest(), message!=null, businessTestFile);
+		Assert.assertNotNull(message);
 		}catch(Exception ex){
-			softAssert.assertTrue(false);
+			
 			yakshaAssert(currentTest(), false, businessTestFile);
+			Assert.assertTrue(false);
 		}	
 			
 		
@@ -273,8 +324,5 @@ public class DemoAutomationRegister extends AppTestBase {
 		browserTearDown();
 	}
 	
-	@AfterMethod
-	public void retryIfTestFails() throws Exception {
-		startupPage.navigateToUrl(configData.get("url"));
-	}
+	
 }

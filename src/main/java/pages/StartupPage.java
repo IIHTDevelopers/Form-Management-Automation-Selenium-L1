@@ -14,9 +14,6 @@ public class StartupPage {
 		commonEvents = new CommonEvents(driver);
 	}
 	
-//	public LoginPage navigateToLoginPage() {
-//		return new LoginPage(driver);
-//	}
 	
 	public void navigateToUrl(String url) throws Exception {
 		

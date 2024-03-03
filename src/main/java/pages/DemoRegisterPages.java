@@ -1,24 +1,16 @@
 package pages;
 
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
 import java.util.Map;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
-import org.testng.Reporter;
-import org.testng.asserts.SoftAssert;
+
+import com.github.dockerjava.api.model.Link;
+
 
 public class DemoRegisterPages extends StartupPage 
 {
-	public SoftAssert softAssert;
-	//WebElemet Declaration
+	//WebElement Declaration
 	By pageTitleText = By.xpath(""); 
 	By switchToNavigationMenu = By.xpath("");
 	By Alerts = By.xpath("");
@@ -59,9 +51,9 @@ public class DemoRegisterPages extends StartupPage
 	By refreshButton = By.xpath("");
 	By chooseFile = By.xpath("");
 	By uploadImageFileName = By.xpath("");
+	// add locators as per need
 	
-	
-	
+	// DECLARE ANY OBJECTS/VARIABLE TO SHARE DATA/INFORMATION/STATUS AMONG DIFFERENT METHODS 
 
 	//Getting the page name
 	String pageName = this.getClass().getSimpleName();
@@ -71,118 +63,99 @@ public class DemoRegisterPages extends StartupPage
 	public DemoRegisterPages(WebDriver driver) 
 	{
 		super(driver);
-//		commonEvents.waitTillElementLocated(switchToNavigationMenu, 120)
-//		.waitTillElementVisible(switchToNavigationMenu, 30);
-		
-//		commonEvents.waitTillElementLocated(Alerts, 120)
-//		.waitTillElementVisible(Alerts, 30);
 
 	}	
 	
 	
 	
 	//Utilization
-	
-	public String getPageTitle() throws Exception
+	//Navigate to the URL and Validate the Home Page. Return the Home Page Title
+	public String getHomePageTitle() throws Exception
 	{
 		return "";
 	}
 	
-	public String alertsPageTitle() throws Exception
-	{
-		return "";
+	
+
+	//Hover SwitchTo menu Option
+	public DemoRegisterPages hoverOnswitchToNavigationMenu() throws Exception {
+		return null;
 	}
+	
+	
 
 	
-	public DemoRegisterPages clickOnswitchToNavigationMenu() throws Exception {
-		return null;
-	}
-	
-	public DemoRegisterPages clickOnRegisterNavigationMenu() throws Exception {
-		return null;
-	}
-	
+	// Click on Alerts sub option
 	public DemoRegisterPages clickOnAlerts() throws Exception {
 		return null;
 	}
 	
+	// Return the Alerts Page Title
+	public String alertsPageTitle() throws Exception
+	{
+		return null;
+	}
 
-	
+	// Click on button to display alerts box
 	public DemoRegisterPages clickOnButtonToDisplayAnAlertBox() throws Exception {
 		return null;
 	}
 	
+	// Return the Alerts message
 	public String alertsMessageValidation() throws Exception
 	{
 		//return page name
 		return "";
 	}	
 	
+	//Navigate to Register Page
+	public DemoRegisterPages clickOnRegisterNavigationMenu() throws Exception {
+		return null;
+	}
 	
+	// Fill the registration form with data populated from expected_data.json
 	public DemoRegisterPages fillRegisterForm(Map<String, String> expectedData) throws Exception {
 		return null;
 	}
 	
-	public DemoRegisterPages fillAndValidateTheRegisterForm(Map<String, String> expectedData) throws Exception {
-		return null;
-	}
-
+	//Click on the country dropdown and Select each country option one by one
 	public DemoRegisterPages clickOnSelectCountryDropdownAndSelectEachCountryOneByOne() throws Exception {
 		return null;
 	}
 	
 
-	public DemoRegisterPages selectEachCountryOneByOneFromCountryDrpdownAndValidate() throws Exception {
-		return null;
-	}
-	
+	//Check and uncheck each hobby checkbox and Validate that the checkboxes are responding correctly to user interaction, allowing selection and deselection.
 	public DemoRegisterPages checkAndUncheckEachHobbyCheckBox() throws Exception {
 		return null;
 	}
 	
-	public DemoRegisterPages validateCheckBoxesRespondingCorrectllyToUserInterAction_AllowingSelectionAndDeselection() throws Exception {
-		return null;
-	}
 	
+	//Select each radio button option for gender and Validate that only one radio button option should be selectable at a time
 	public DemoRegisterPages selectEachRadioButton() throws Exception {
 		return null;
 	}
 	
-	public DemoRegisterPages validateEachRadioButtonoptionShouldBeSelectableAttime() throws Exception {
-		return null;
-	}
 	
-	public DemoRegisterPages validatePasswordFieldForScenarioOneBySendingMatchingValues(String data) throws Exception {
-		return null;
-	}
-	
-	public DemoRegisterPages validatePasswordFieldForScenarioTwoBySendingDifferentValues(String data1, String data2) throws Exception {
-		return null;
-	}
-	
-	public DemoRegisterPages validatePasswordFieldForScenarioThreeBySendingInvalidValues(String data) throws Exception {
-		return null;
-	}
-	
+	//Select different dates from the Date Of Birth fields_Validate that dates are selectable
 	public DemoRegisterPages selectYearMonthDate() throws Exception {
 		return null;
 	}
 	
-	public DemoRegisterPages validateAccurateSelectableYearMonthDate() throws Exception {
-		return null;
-	}
-	
+	// Click on the image upload button and Choose an image file from the file system _ Validate that the selected image should be displayed on the page after upload
 	public DemoRegisterPages clickOnChooseFilUploadButton() throws Exception {
 		return null;
 	}
 	
+	//Get the name of the file uploaded
 	public String getUploadImageName() throws Exception {
 		//return page name
-		return "";
+		return null;
 	}
 	
-	public DemoRegisterPages validateMandetoryField() throws Exception {
+	// Submit the register form, Verify that error messages for incomplete field displayed as appropriate. Return that message
+	public String submitRegistrationFormAndReturnthatMessage() throws Exception {
 		return null;
 	}
 
 }
+
